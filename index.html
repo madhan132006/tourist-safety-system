@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tourist Safety System</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_ACTUAL_GOOGLE_MAPS_API_KEY&libraries=geometry"></script>
+</head>
+<body>
+    <header>
+        <h1>Tourist Safety System</h1>
+        <nav>
+            <button onclick="showSection('dashboard')">Dashboard</button>
+            <button onclick="showSection('tourists')">Tourists</button>
+            <button onclick="showSection('incidents')">Incidents</button>
+            <button onclick="showSection('danger-zones')">Danger Zones</button>
+            <button onclick="showSection('location-tracking')">Location Tracking</button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="dashboard" class="section active">
+            <h2>Dashboard</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <h3>Total Tourists</h3>
+                    <p id="total-tourists">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Active Incidents</h3>
+                    <p id="active-incidents">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Danger Zones</h3>
+                    <p id="danger-zones-count">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Risk Alerts</h3>
+                    <p id="risk-alerts">0</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="tourists" class="section">
+            <h2>Tourists</h2>
+            <button onclick="showTouristForm()">Add New Tourist</button>
+            <div id="tourist-form" class="form-container" style="display: none;">
+                <h3>Add Tourist</h3>
+                <form id="add-tourist-form">
+                    <input type="text" id="tourist-name" placeholder="Name" required>
+                    <input type="email" id="tourist-email" placeholder="Email" required>
+                    <input type="tel" id="tourist-phone" placeholder="Phone Number" required>
+                    <input type="number" id="tourist-age" placeholder="Age" required>
+                    <input type="text" id="tourist-nationality" placeholder="Nationality" required>
+                    <input type="text" id="tourist-emergency-contact" placeholder="Emergency Contact">
+                    <input type="tel" id="tourist-emergency-phone" placeholder="Emergency Phone">
+                    <label><input type="checkbox" id="first-time-visitor"> First Time Visitor</label>
+                    <button type="submit">Save Tourist</button>
+                    <button type="button" onclick="hideTouristForm()">Cancel</button>
+                </form>
+            </div>
+            <div id="tourists-list" class="list-container"></div>
+        </section>
+
+        <section id="incidents" class="section">
+            <h2>Incidents</h2>
+            <button onclick="showIncidentForm()">Report Incident</button>
+            <div id="incident-form" class="form-container" style="display: none;">
+                <h3>Report Incident</h3>
+                <form id="add-incident-form">
+                    <select id="incident-tourist" required>
+                        <option value="">Select Tourist</option>
+                    </select>
+                    <select id="incident-type" required>
+                        <option value="">Select Type</option>
+                        <option value="theft">Theft</option>
+                        <option value="accident">Accident</option>
+                        <option value="assault">Assault</option>
+                        <option value="medical">Medical</option>
+                        <option value="lost">Lost</option>
+                        <option value="other">Other</option>
+                    </select>
+                    <textarea id="incident-description" placeholder="Description" required></textarea>
+                    <input type="number" step="any" id="incident-lat" placeholder="Latitude" required>
+                    <input type="number" step="any" id="incident-lng" placeholder="Longitude" required>
+                    <select id="incident-severity" required>
+                        <option value="Low">Low</option>
+                        <option value="Medium">Medium</option>
+                        <option value="High">High</option>
+                        <option value="Critical">Critical</option>
+                    </select>
+                    <button type="submit">Report Incident</button>
+                    <button type="button" onclick="hideIncidentForm()">Cancel</button>
+                </form>
+            </div>
+            <div id="incidents-list" class="list-container"></div>
+        </section>
+
+        <section id="danger-zones" class="section">
+            <h2>Danger Zones</h2>
+            <button onclick="showDangerZoneForm()">Add Danger Zone</button>
+            <div id="danger-zone-form" class="form-container" style="display: none;">
+                <h3>Add Danger Zone</h3>
+                <form id="add-danger-zone-form">
+                    <input type="text" id="zone-name" placeholder="Zone Name" required>
+                    <input type="number" step="any" id="zone-lat" placeholder="Latitude" required>
+                    <input type="number" step="any" id="zone-lng" placeholder="Longitude" required>
+                    <input type="number" id="zone-radius" placeholder="Radius (meters)" required>
+                    <input type="number" step="0.01" id="zone-risk" placeholder="Risk Level (0-1)" min="0" max="1" required>
+                    <textarea id="zone-description" placeholder="Description"></textarea>
+                    <input type="text" id="zone-reason" placeholder="Reason (Crime Rate, Natural Disaster, etc.)">
+                    <button type="submit">Save Zone</button>
+                    <button type="button" onclick="hideDangerZoneForm()">Cancel</button>
+                </form>
+            </div>
+            <div id="danger-zones-list" class="list-container"></div>
+        </section>
+
+        <section id="location-tracking" class="section">
+            <h2>Location Tracking</h2>
+            <div class="location-controls">
+                <select id="track-tourist">
+                    <option value="">Select Tourist</option>
+                </select>
+                <button onclick="startTracking()">Start Tracking</button>
+                <button onclick="stopTracking()">Stop Tracking</button>
+            </div>
+            <div id="map" class="map-container"></div>
+            <div id="location-info"></div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>
